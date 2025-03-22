@@ -46,7 +46,7 @@ def gateway_timeout(error):
 def handler_exception(error):
     return jsonify({'error': 'Internal Server Error', 'description': "Exception", 'status_code': 500, 'timestamp': datetime.now().timestamp()}), 500
 
-@app.route('/saiphwalker', methods=['GET'])
+@app.route('api/saiphwalker/v1/joindata/execute', methods=['GET'])
 def _execute()-> tuple[dict, int]:
     headers = dict(request.headers)
 
