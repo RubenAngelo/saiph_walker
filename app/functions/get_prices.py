@@ -1,7 +1,8 @@
-from utils.utils import make_request
+from app.util.utils import make_request
 
-def get_prices(ids: list[str], vs_currencies: str, include_market_cap: str, include_24hr_vol: str, include_24hr_change: str, include_last_updated_at: str) -> tuple[dict, int]:
+def execute(ids: list[str], include_market_cap: str, include_24hr_vol: str, include_24hr_change: str, include_last_updated_at: str, vs_currencies: str = "usd") -> tuple[dict, int]:
     ids = ",".join(ids)
+
     return make_request(
         f"/simple/price?ids={ids}&"
         f"vs_currencies={vs_currencies}&"
