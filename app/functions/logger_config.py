@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 def setup_logger(app):
-    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'logs')
+    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'logs')
     os.makedirs(log_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M')

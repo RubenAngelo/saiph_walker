@@ -1,11 +1,13 @@
 from flask import jsonify, request, abort
 from pydantic import ValidationError
 
+from app import limiter
 from app.functions import get_infos, get_prices, convert_change_percentage, headers_validator
 from app.util.utils import unpack
 from app.routes.v1.blueprints import bp_cripto as bp
 
 @bp.route('/info/price/execute', methods=['GET'])
+@limiter.limit("3 per minute")
 def get_infos_prices():
     try:
         order,\
