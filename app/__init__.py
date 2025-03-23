@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from app.functions.logger_config import setup_logger
+from app.config.logger_config import setup_logger
 
 limiter = Limiter(get_remote_address)
 
