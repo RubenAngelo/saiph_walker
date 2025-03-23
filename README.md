@@ -4,8 +4,6 @@
 permitindo o controle detalhado de resposta através de headers HTTP.
 A API também conta com limitação de requisições, tratamento robusto de erros, e estrutura modular para escalabilidade e manutenção\.
 
----
-
 ## ✨ Funcionalidades
 
 - 📈 Obtenção de dados de preços e variação de criptomoedas da API da CoinGecko via **Requests**.
@@ -16,8 +14,6 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 - 📋 Logs detalhados de requisições e respostas com o **logging**.
 - ⚠️ Tratamento completo de erros HTTP com respostas padronizadas com o **errorhandler** do **Flask**.
 
----
-
 ## 🗂️ Estrutura do Projeto
 
 ~~~~ python
@@ -25,30 +21,30 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 ├── app
 │   ├── constant
 │   │   └── constants.py
-|   |
+│   │
 │   ├── functions
-|   |   ├── convert_change_percentage.py
-|   |   ├── get_infos.py
-|   |   ├── get_prices.py
-|   |   ├── headers_validator.py
-|   |   └── logger_config.py
-|   |
+│   │   ├── convert_change_percentage.py
+│   │   ├── get_infos.py
+│   │   ├── get_prices.py
+│   │   ├── headers_validator.py
+│   │   └── logger_config.py
+│   │
 │   ├── handler
 │   │   └── handlers.py
 │   │
 │   ├── routes
-|   |   └── v1
-|   |       ├── cripto
-|   |       |   └── info_price.py
-|   |       |
-|   |       ├── health
-|   |       |   └── check.py
-|   |       |
-|   |       ├── __init__.py
-|   |       └── blueprints.py
-|   |
+│   │   └── v1
+│   │       ├── cripto
+│   │       │   └── info_price.py
+│   │       │
+│   │       ├── health
+│   │       │   └── check.py
+│   │       │
+│   │       ├── __init__.py
+│   │       └── blueprints.py
+│   │
 │   ├── util
-|   |   └── utils.py
+│   │   └── utils.py
 │   │
 │   └── __init__.py
 │
@@ -60,17 +56,12 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 └── run.py                                  
 ~~~~
 
----
-
 ## 📌 Rota Principal
 
 `GET /api/saiphwalker/v1/cripto/info/price/execute`
 
-
 **Descrição**:
 Consulta informações de criptomoedas da API publica da CoinGecko com suporte a personalização da resposta via headers HTTP.
-
----
 
 ## Headers
 
@@ -90,8 +81,6 @@ Consulta informações de criptomoedas da API publica da CoinGecko com suporte a
 | Price-Change-Percentage-200D | string | incluir variação percentual de preço dos últimos 200 dias de cada criptomoeda  |      false      |                              true,false                              |
 |  Price-Change-Percentage-1Y  | string |     incluir variação percentual de preço do último ano de cada criptomoeda     |      false      |                              true,false                              |
 
----
-
 ## Exemplo de Requisição
 
 ~~~~ bash
@@ -110,8 +99,6 @@ curl -X GET 'http://localhost:5000/api/saiphwalker/v1/cripto/info/price/execute'
 --header 'Price-Change-Percentage-200D: false' \
 --header 'Price-Change-Percentage-1Y: false'
 ~~~~
-
----
 
 ## Exemplo de Resposta (200 OK)
 
@@ -156,8 +143,6 @@ curl -X GET 'http://localhost:5000/api/saiphwalker/v1/cripto/info/price/execute'
 ]
 ~~~~
 
----
-
 ## 📌 Rota de Checagem da API
 
 `GET /api/saiphwalker/v1/health/check`
@@ -165,15 +150,11 @@ curl -X GET 'http://localhost:5000/api/saiphwalker/v1/cripto/info/price/execute'
 **Descrição**:
 Consulta o status da versão da API.
 
----
-
 ## Exemplo de Requisição
 
 ~~~~ bash
 curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
 ~~~~
-
----
 
 ## Exemplo de Resposta (200 OK)
 
@@ -184,8 +165,6 @@ curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
     "timestamp": 1742707788.380798
 }
 ~~~~
-
----
 
 ## 🧪 Como Rodar Localmente
 
@@ -213,8 +192,6 @@ curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
     >Crie um .env ou insira as variáveis `BASE_URL = https://api.coingecko.com/api/v3` e `KEY = Sua chave de API da CoinGecko` no seu ambiente.
     ><https://docs.coingecko.com/v3.0.1/reference/setting-up-your-api-key>
 
----
-
 ## 📝 Logs
 
 - Os logs são gerados automaticamente em /root/logs/ com data e hora no nome do arquivo.
@@ -223,13 +200,9 @@ curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
   - Status e corpo da resposta.
   - Erros são também logados com tracebacks (se houver).
 
----
-
 ## ⚠️ Limitação de Requisições
 
 - Cada IP pode fazer até 3 requisições por minuto para as rotas `/api/saiphwalker/v1/cripto/info/price/execute` e `/api/saiphwalker/v1/health/check`.
-
----
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -239,13 +212,9 @@ curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
 - Flask-Limiter
 - Logging
 
----
-
 ## 💡 Contribuindo
 
 Sinta-se à vontade para abrir issues ou pull requests. Feedbacks e melhorias são sempre bem-vindos!
-
----
 
 ## 🤝 Contato
 
