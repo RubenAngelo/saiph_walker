@@ -6,7 +6,7 @@ from app.config.logger_config import setup_logger
 
 limiter = Limiter(get_remote_address)
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
 
     limiter.init_app(app)

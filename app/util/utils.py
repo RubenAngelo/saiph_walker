@@ -42,3 +42,4 @@ def make_error_response(error_name: str, description: str, status_code: int) -> 
         'status_code': status_code,
         'timestamp': current_timestamp()
     }), status_code
+

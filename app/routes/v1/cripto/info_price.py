@@ -1,14 +1,15 @@
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, Response
 from pydantic import ValidationError
+from typing import Tuple
 
 from app import limiter
-from app.functions import get_infos, get_prices, convert_change_percentage, headers_validator
+from app.functions import get_infos, get_prices, convert_change_percentage, headers_validator, join_data_info_price
 from app.util.utils import unpack
 from app.routes.v1.blueprints import bp_cripto as bp
 
 @bp.route('/info/price/execute', methods=['GET'])
 @limiter.limit("3 per minute")
-def get_infos_prices():
+def get_infos_prices() -> Tuple[Response, int]:
     try:
         order,\
         per_page,\
@@ -57,9 +58,9 @@ def get_infos_prices():
     if status != 200:
         abort(status, description=prices.get('error', prices.get('status', {}).get('error_message', 'Unknown error')))
 
-    for info in infos:
-        price_values = prices.get(info["id"])
-        if price_values:
-            info.update(price_values)
+    response = join_data_info_price.execute(
+        infos=infos,
+        prices=prices
+    )
 
-    return jsonify(infos), 200
+    return jsonify(response), 200
