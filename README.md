@@ -37,7 +37,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 │   │   └── join_data_info_price.py
 │   │
 │   ├── handler
-│   │   └── handlers.py
+│   │   └── error_handlers.py
 │   │
 │   ├── routes
 │   │   └── v1
