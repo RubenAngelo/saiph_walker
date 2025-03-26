@@ -93,8 +93,13 @@ def create_app() -> Flask:
     error_handlers(app)
 
     from app.routes.v1 import blueprints_v1 # pylint: disable=import-outside-toplevel
+    from app.routes.v2 import blueprints_v2 # pylint: disable=import-outside-toplevel
+
     # Registra os blueprints das rotas
     for bp in blueprints_v1:
+        app.register_blueprint(bp)
+
+    for bp in blueprints_v2:
         app.register_blueprint(bp)
 
     return app
