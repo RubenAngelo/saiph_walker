@@ -20,6 +20,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+HOST_SAIPHWALKER = os.getenv("HOST_SAIPHWALKER")
+
 BASE_URL = os.getenv("BASE_URL")
 KEY = os.getenv("KEY")
 

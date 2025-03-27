@@ -18,8 +18,10 @@ Notas:
 from flask import Flask, request, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from app.config.logger_config import setup_logger
+from app.functions import saiphwalker_caller
 
 limiter = Limiter(get_remote_address)
 
@@ -42,6 +44,11 @@ def create_app() -> Flask:
 
     # Configura o log da aplicação
     setup_logger(app)
+
+    # Inicializa o scheduler
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(saiphwalker_caller.execute, 'interval', minutes=5)
+    scheduler.start()
 
     @app.before_request
     def log_request_info() -> None:
