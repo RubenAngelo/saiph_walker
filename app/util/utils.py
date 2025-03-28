@@ -93,3 +93,17 @@ def make_error_response(
         'status_code': status_code,
         'timestamp': current_timestamp()
     }), status_code
+
+def open_file(file_path: str) -> str:
+    """
+    Abre um arquivo e retorna o conteúdo dele como uma string.
+
+    Args:
+        file_path (str)
+
+    Returns:
+        str
+    """
+
+    with open(file_path, 'r', encoding="utf-8") as file:
+        return file.read()

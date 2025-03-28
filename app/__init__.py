@@ -23,7 +23,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from app.config.logger_config import setup_logger
 from app.functions import saiphwalker_caller
 
-limiter = Limiter(get_remote_address)
+limiter = Limiter(get_remote_address, storage_uri="memory://")
 
 def create_app() -> Flask:
     """
@@ -45,10 +45,10 @@ def create_app() -> Flask:
     # Configura o log da aplicação
     setup_logger(app)
 
-    # Inicializa o scheduler
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(saiphwalker_caller.execute, 'interval', minutes=5)
-    scheduler.start()
+    # Inicializa o scheduler para v1 comente o comando abaixo
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(saiphwalker_caller.execute, 'interval', minutes=5)
+    # scheduler.start()
 
     @app.before_request
     def log_request_info() -> None:
@@ -69,6 +69,7 @@ def create_app() -> Flask:
             dict(request.headers),
             data if data else "No body or not JSON"
         )
+
 
     @app.after_request
     def log_response_info(response: Response) -> Response:
