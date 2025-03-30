@@ -15,8 +15,6 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 - 📉 Rate limiting com **Flask-Limiter** (3 requisições por minuto por IP).
 - 📋 Logs detalhados de requisições e respostas com o **logging**.
 - ⚠️ Tratamento completo de erros HTTP com respostas padronizadas com o **errorhandler** do **Flask**.
-- 📅 Rotina criada para chamar a API à cada 5 minutos com o **apscheduler**.
-- 📊 Conexão com um banco de postgreSQL com o **psycopg2**
 
 </br>
 
@@ -26,7 +24,6 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 /SAIPH_WALKER
 ├── app
 │   ├── config
-│   │   ├── db_config.py
 │   │   └── logger_config.py
 │   │
 │   ├── constant
@@ -37,14 +34,13 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 │   │   ├── get_infos.py
 │   │   ├── get_prices.py
 │   │   ├── headers_validator.py
-│   │   ├── join_data_info_price.py
-│   │   └── saiphwalker_caller.py
+│   │   └── join_data_info_price.py
 │   │
 │   ├── handler
 │   │   └── error_handlers.py
 │   │
 │   ├── routes
-│   │   └── v2
+│   │   └── v1
 │   │       ├── cripto
 │   │       │   └── info_price.py
 │   │       │
@@ -53,9 +49,6 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 │   │       │
 │   │       ├── __init__.py
 │   │       └── blueprints.py
-│   │
-│   ├── sql
-│   │    └── insert_into_mintaka.sql
 │   │
 │   ├── util
 │   │   └── utils.py
@@ -74,7 +67,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 
 ## 📌 Endpoint de informação e preço das criptomoedas
 
-### GET `/api/saiphwalker/v2/cripto/info/price/execute`
+### GET `/api/saiphwalker/v1/cripto/info/price/execute`
 
 </br>
 
@@ -172,7 +165,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 </br>
 
 > [!NOTE]
-> **Descrição**: Consulta informações de criptomoedas da API publica da CoinGecko com suporte a personalização da resposta via headers HTTP.
+> **Descrição**: Consulta o status da API V1
 
 </br>
 
@@ -186,7 +179,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 
     ~~~~ json
     {
-        "status": "(V1) To the Orion, my friend!",
+        "status": "(V1) The rocket still working, but V2 is ready to run.",
         "status_code": 200,
         "timestamp": 1742707788.380798
     }

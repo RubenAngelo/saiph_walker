@@ -46,9 +46,9 @@ def create_app() -> Flask:
     setup_logger(app)
 
     # Inicializa o scheduler para v1 comente o comando abaixo
-    # scheduler = BackgroundScheduler()
-    # scheduler.add_job(saiphwalker_caller.execute, 'interval', minutes=5)
-    # scheduler.start()
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(saiphwalker_caller.execute, 'interval', minutes=5)
+    scheduler.start()
 
     @app.before_request
     def log_request_info() -> None:

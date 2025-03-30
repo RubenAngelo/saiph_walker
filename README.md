@@ -1,8 +1,8 @@
-# 🚀 Saiph Walker API
+# 🚀 Saiph Walker API V2
 
 **API RESTful** construída com **Flask** que fornece informações e preços atualizados de criptomoedas,
 permitindo o controle detalhado de resposta através de headers HTTP.
-A API também conta com limitação de requisições, tratamento robusto de erros, e estrutura modular para escalabilidade e manutenção.
+A API também conta com limitação de requisições, tratamento robusto de erros, conexão com banco de dados postgreSQL, e estrutura modular para escalabilidade e manutenção.
 
 ---
 
@@ -15,6 +15,8 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 - 📉 Rate limiting com **Flask-Limiter** (3 requisições por minuto por IP).
 - 📋 Logs detalhados de requisições e respostas com o **logging**.
 - ⚠️ Tratamento completo de erros HTTP com respostas padronizadas com o **errorhandler** do **Flask**.
+- 📅 Rotina criada para chamar a API à cada 5 minutos com o **apscheduler**.
+- 📊 Conexão com um banco de postgreSQL com o **psycopg2**
 
 </br>
 
@@ -24,6 +26,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 /SAIPH_WALKER
 ├── app
 │   ├── config
+│   │   ├── db_config.py
 │   │   └── logger_config.py
 │   │
 │   ├── constant
@@ -34,13 +37,14 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 │   │   ├── get_infos.py
 │   │   ├── get_prices.py
 │   │   ├── headers_validator.py
-│   │   └── join_data_info_price.py
+│   │   ├── join_data_info_price.py
+│   │   └── saiphwalker_caller.py
 │   │
 │   ├── handler
 │   │   └── error_handlers.py
 │   │
 │   ├── routes
-│   │   └── v1
+│   │   └── v2
 │   │       ├── cripto
 │   │       │   └── info_price.py
 │   │       │
@@ -49,6 +53,10 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 │   │       │
 │   │       ├── __init__.py
 │   │       └── blueprints.py
+│   │
+│   ├── sql
+│   │    ├── insert_into_mintaka.sql
+│   │    └── create_table_mintaka.sql
 │   │
 │   ├── util
 │   │   └── utils.py
@@ -67,14 +75,20 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 
 ## 📌 Endpoint de informação e preço das criptomoedas
 
-### GET `/api/saiphwalker/v1/cripto/info/price/execute`
+### GET `/api/saiphwalker/v2/cripto/info/price/execute`
 
 </br>
 
 > [!NOTE]
 > **Descrição**: Consulta informações de criptomoedas da API publica da CoinGecko com suporte a personalização da resposta via headers HTTP.
+>
+> A chamada da API ocorre automaticamente a cada 5 minutos ao iniciar a aplicação.
+>
+> A API V2 não tem output, ela insere os dados da CoinGecko no banco de dados.
+>
 
-</br>
+> [!TIP]
+> Para saber a estrutura dos dados acesse a [documentação da API V1.](https://github.com/RubenAngelo/saiph-walker/blob/main/app/routes/v1/README.md#-exemplo-de-resposta-200-ok)
 
 - ## 🧾 Headers
 
@@ -97,7 +111,7 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 - ## 📤 Exemplo de Requisição
 
     ~~~~ bash
-    curl -X GET 'http://localhost:5000/api/saiphwalker/v1/cripto/info/price/execute' \
+    curl -X GET 'http://localhost:5000/api/saiphwalker/v2/cripto/info/price/execute' \
     --header 'Order: market_cap_desc' \
     --header 'Per-Page: top_5' \
     --header 'Include-Market-Cap: true' \
@@ -113,73 +127,34 @@ A API também conta com limitação de requisições, tratamento robusto de erro
     --header 'Price-Change-Percentage-1Y: false'
     ~~~~
 
-- ## ✅ Exemplo de Resposta (200 OK)
+- ## ✅ Exemplo de Resposta (204 No Content)
 
     ~~~~ json
-    [
-        {
-            "ath": 108786,
-            "ath_change_percentage": -22.75336,
-            "ath_date": "2025-01-20T09:11:54.494Z",
-            "atl": 67.81,
-            "atl_change_percentage": 123826.26824,
-            "atl_date": "2013-07-06T00:00:00.000Z",
-            "circulating_supply": 19840603.0,
-            "current_price": 84098,
-            "fully_diluted_valuation": 1668499390896,
-            "high_24h": 84492,
-            "id": "bitcoin",
-            "image": "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
-            "last_updated": "2025-03-23T02:29:06.423Z",
-            "last_updated_at": 1742696940,
-            "low_24h": 83709,
-            "market_cap": 1668499390896,
-            "market_cap_change_24h": -1341764236.9660645,
-            "market_cap_change_percentage_24h": -0.08035,
-            "market_cap_rank": 1,
-            "max_supply": 21000000.0,
-            "name": "Bitcoin",
-            "price_change_24h": -67.03527112344455,
-            "price_change_percentage_24h": -0.07965,
-            "price_change_percentage_24h_in_currency": -0.07964753311720274,
-            "price_change_percentage_30d_in_currency": -14.507040396189216,
-            "price_change_percentage_7d_in_currency": 0.23645445093731804,
-            "roi": null,
-            "symbol": "btc",
-            "total_supply": 19840603.0,
-            "total_volume": 8255654276,
-            "usd": 84095,
-            "usd_24h_change": -0.08277171377021249,
-            "usd_24h_vol": 8254290175.502451,
-            "usd_market_cap": 1668499390896.371
-        },
-    ]
+    {}
     ~~~~
 
 </br>
 
 ## 🔍 Endpoint de Status
 
-### GET `/api/saiphwalker/v1/health/check`
+### GET `/api/saiphwalker/v2/health/check`
 
 </br>
 
 > [!NOTE]
-> **Descrição**: Consulta informações de criptomoedas da API publica da CoinGecko com suporte a personalização da resposta via headers HTTP.
-
-</br>
+> **Descrição**: Consulta o status da API V2
 
 - ## 📤 Exemplo de Requisição **Endpoint de Status**
 
     ~~~~ bash
-    curl -X GET http://localhost:5000/api/saiphwalker/v1/health/check/'
+    curl -X GET http://localhost:5000/api/saiphwalker/v2/health/check/'
     ~~~~
 
 - ## ✅ Exemplo de Resposta (200 OK) **Endpoint de Status**
 
     ~~~~ json
     {
-        "status": "(V1) To the Orion, my friend!",
+        "status": "(V2) To the Orion, my friend!",
         "status_code": 200,
         "timestamp": 1742707788.380798
     }
@@ -196,6 +171,14 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 > Crie um .env ou insira as variáveis `BASE_URL = https://api.coingecko.com/api/v3` e `KEY = Sua chave de API da CoinGecko` no seu ambiente.
 >
 > [Documentação da CoinGecko para obter a chave de API.](https://docs.coingecko.com/v3.0.1/reference/setting-up-your-api-key)
+> 
+> No .env crie as seguintes variáveis ou insira as variáveis para conectar ao banco de dados
+> - NAME_DB <sup> Nome do banco de dados. </sup>
+> - USER_DB <sup> User do banco de dados. </sup>
+> - PASSWORD_DB <sup> Senha do banco de dados. </sup>
+> - HOST_DB <sup> Host do banco de dados. </sup>
+> - PORT_DB <sup> Porta do banco de dados. </sup>
+>
 
 </br>
 
@@ -212,7 +195,10 @@ A API também conta com limitação de requisições, tratamento robusto de erro
     pip install -r requirements.txt
     ~~~~
 
-3. Execute a aplicação
+3. Crie a tabela no banco de dados
+    - Use o [CREATE TABLE da tabela mintaka](https://github.com/RubenAngelo/saiph-walker/blob/main/app/sql/create_table_mintaka.sql)
+
+4. Execute a aplicação
 
     ~~~~ bash
     python run.py
@@ -229,13 +215,9 @@ A API também conta com limitação de requisições, tratamento robusto de erro
   - Status e corpo da resposta.
   - Erros são também logados com tracebacks (se houver).
 
-</br>
-
 ## ⚠️ Limitação de Requisições
 
-- Cada IP pode fazer até 3 requisições por minuto para as rotas `/api/saiphwalker/v1/cripto/info/price/execute` e `/api/saiphwalker/v1/health/check`.
-
-</br>
+- Cada IP pode fazer até 3 requisições por minuto para as rotas `/api/saiphwalker/v2/cripto/info/price/execute` e `/api/saiphwalker/v2/health/check`.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -244,14 +226,11 @@ A API também conta com limitação de requisições, tratamento robusto de erro
 - Pydantic
 - Flask-Limiter
 - Logging
-
-</br>
+- psycopg2
 
 ## 💡 Contribuindo
 
 Sinta-se à vontade para abrir issues ou pull requests. Feedbacks e melhorias são sempre bem-vindos!  
-
-</br>
 
 ## 🤝 Contato
 
